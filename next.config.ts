@@ -9,7 +9,9 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: __dirname,
   },
-  /* config options here */
+  reactStrictMode: true,
+  swcMinify: true,
+  output: 'standalone', // ensures serverless-friendly deployment on Vercel
 };
 
 export default nextConfig;

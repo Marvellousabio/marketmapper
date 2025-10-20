@@ -124,7 +124,7 @@ export default function Home() {
             with Market Mapper&apos;s guidance.
           </p>
           <Link href="/register">
-            <Button size="lg" className="bg-white text-green-600 hover:bg-gray-50">
+            <Button size="lg" className="bg-color-primary-foreground text-color-primary hover:bg-green-50">
               Get Started Today
             </Button>
           </Link>
