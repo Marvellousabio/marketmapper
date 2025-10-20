@@ -144,7 +144,7 @@ export default function USPBuilderPage() {
           <div className="space-y-6">
             <div>
               <h2 className="text-xl font-semibold text-gray-900 mb-2">What product or service are you offering?</h2>
-              <p className="text-gray-600 mb-4">Be specific about what you're selling.</p>
+              <p className="text-gray-600 mb-4">Be specific about what you&apos;re selling.</p>
               <Input
                 placeholder="e.g., Healthy ready-to-eat meals, Local handicrafts, Organic produce delivery"
                 value={uspData.product}

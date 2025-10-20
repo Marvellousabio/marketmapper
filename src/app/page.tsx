@@ -121,7 +121,7 @@ export default function Home() {
           </h2>
           <p className="text-xl text-green-100 mb-8">
             Join thousands of Nigerian entrepreneurs who have successfully launched their businesses
-            with Market Mapper's guidance.
+            with Market Mapper&apos;s guidance.
           </p>
           <Link href="/register">
             <Button size="lg" className="bg-white text-green-600 hover:bg-gray-50">

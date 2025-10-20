@@ -47,8 +47,11 @@ export default function RegisterPage() {
     try {
       await signUp(formData.email, formData.password, formData.displayName);
       router.push('/dashboard');
-    } catch (err: any) {
-      setError(err.message || 'Failed to create account');
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to create account';
+      setError(errorMessage);
+      console.error('Sign up error:', err); 
+      
     } finally {
       setLoading(false);
     }

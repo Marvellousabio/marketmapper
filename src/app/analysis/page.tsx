@@ -101,7 +101,7 @@ export default function AnalysisPage() {
             />
 
             <div className="bg-blue-50 p-4 rounded-lg">
-              <h3 className="font-medium text-blue-900 mb-2">What we'll analyze:</h3>
+              <h3 className="font-medium text-blue-900 mb-2">What we&apos;ll analyze:</h3>
               <ul className="text-sm text-blue-800 space-y-1">
                 <li>• Local demographics and population data</li>
                 <li>• Social media trends and conversations</li>
