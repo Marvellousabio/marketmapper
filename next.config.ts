@@ -1,17 +1,11 @@
 import type { NextConfig } from "next";
-import { fileURLToPath } from "url";
-import { dirname } from "path";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 const nextConfig: NextConfig = {
-  turbopack: {
-    root: __dirname,
-  },
   reactStrictMode: true,
-  swcMinify: true,
-  output: 'standalone', 
+  output: "standalone",        // ensures serverless-friendly deployment
+  experimental: {
+    appDir: true, // runtime is fine
+  } as Record<string, unknown>,           // enable App Router if used
 };
 
 export default nextConfig;
