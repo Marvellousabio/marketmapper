@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
   },
   reactStrictMode: true,
   swcMinify: true,
-  output: 'standalone', // ensures serverless-friendly deployment on Vercel
+  output: 'standalone', 
 };
 
 export default nextConfig;
