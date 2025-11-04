@@ -1,0 +1,51 @@
+[debug] [2025-11-04T19:23:26.938Z] ----------------------------------------------------------------------
+[debug] [2025-11-04T19:23:26.983Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\DELLL\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy --only firestore:rules
+[debug] [2025-11-04T19:23:26.984Z] CLI Version:   14.21.0
+[debug] [2025-11-04T19:23:26.985Z] Platform:      win32
+[debug] [2025-11-04T19:23:26.985Z] Node Version:  v22.13.0
+[debug] [2025-11-04T19:23:26.986Z] Time:          Tue Nov 04 2025 20:23:26 GMT+0100 (West Africa Standard Time)
+[debug] [2025-11-04T19:23:26.986Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-11-04T19:23:26.991Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[error] 
+[error] Error: Not in a Firebase app directory (could not locate firebase.json)
+[debug] [2025-11-04T19:23:50.210Z] ----------------------------------------------------------------------
+[debug] [2025-11-04T19:23:50.216Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\DELLL\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy --only firestore:rules
+[debug] [2025-11-04T19:23:50.216Z] CLI Version:   14.21.0
+[debug] [2025-11-04T19:23:50.217Z] Platform:      win32
+[debug] [2025-11-04T19:23:50.217Z] Node Version:  v22.13.0
+[debug] [2025-11-04T19:23:50.217Z] Time:          Tue Nov 04 2025 20:23:50 GMT+0100 (West Africa Standard Time)
+[debug] [2025-11-04T19:23:50.217Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-11-04T19:23:50.221Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[error] 
+[error] Error: No currently active project.
+To run this command, you need to specify a project. You have two options:
+- Run this command with --project <alias_or_project_id>.
+- Set an active project by running firebase use --add, then rerun this command.
+To list all the Firebase projects to which you have access, run firebase projects:list.
+To learn about active projects for the CLI, visit https://firebase.google.com/docs/cli#project_aliases
+
+
+[debug] [2025-11-04T19:26:12.140Z] ----------------------------------------------------------------------
+[debug] [2025-11-04T19:26:12.144Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\DELLL\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy --only firestore:rules --project medtech-79de4
+[debug] [2025-11-04T19:26:12.144Z] CLI Version:   14.21.0
+[debug] [2025-11-04T19:26:12.145Z] Platform:      win32
+[debug] [2025-11-04T19:26:12.145Z] Node Version:  v22.13.0
+[debug] [2025-11-04T19:26:12.145Z] Time:          Tue Nov 04 2025 20:26:12 GMT+0100 (West Africa Standard Time)
+[debug] [2025-11-04T19:26:12.145Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-11-04T19:26:12.150Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2025-11-04T19:26:12.544Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-11-04T19:26:12.751Z] Error: Could not load the default credentials. Browse to https://cloud.google.com/docs/authentication/getting-started for more information.
+    at GoogleAuth.getApplicationDefaultAsync (C:\Users\DELLL\AppData\Roaming\npm\node_modules\firebase-tools\node_modules\google-auth-library\build\src\auth\googleauth.js:287:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async GoogleAuth._GoogleAuth_determineClient (C:\Users\DELLL\AppData\Roaming\npm\node_modules\firebase-tools\node_modules\google-auth-library\build\src\auth\googleauth.js:834:32)
+    at async GoogleAuth.getClient (C:\Users\DELLL\AppData\Roaming\npm\node_modules\firebase-tools\node_modules\google-auth-library\build\src\auth\googleauth.js:698:20)
+    at async GoogleAuth.getAccessToken (C:\Users\DELLL\AppData\Roaming\npm\node_modules\firebase-tools\node_modules\google-auth-library\build\src\auth\googleauth.js:722:24)
+    at async autoAuth (C:\Users\DELLL\AppData\Roaming\npm\node_modules\firebase-tools\lib\requireAuth.js:28:19)
+    at async requireAuth (C:\Users\DELLL\AppData\Roaming\npm\node_modules\firebase-tools\lib\requireAuth.js:91:20)
+    at async requirePermissions (C:\Users\DELLL\AppData\Roaming\npm\node_modules\firebase-tools\lib\requirePermissions.js:17:5)
+    at async C:\Users\DELLL\AppData\Roaming\npm\node_modules\firebase-tools\lib\command.js:259:17
+[error] 
+[error] Error: Failed to authenticate, have you run firebase login?

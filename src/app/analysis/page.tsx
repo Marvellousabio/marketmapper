@@ -30,6 +30,7 @@ export default function AnalysisPage() {
     setAnalyzing(true);
 
     try {
+      console.log('Starting analysis for user:', user.id);
       // Generate mock analysis data (in production, this would call AI APIs)
       const analysisData = {
         demographics: {
@@ -49,6 +50,7 @@ export default function AnalysisPage() {
         }
       };
 
+      console.log('Attempting to save analysis to Firestore...');
       // Save analysis to Firestore
       const docRef = await addDoc(collection(db, 'marketAnalyses'), {
         userId: user.id,
@@ -56,6 +58,7 @@ export default function AnalysisPage() {
         ...analysisData,
         createdAt: new Date()
       });
+      console.log('Analysis saved successfully with ID:', docRef.id);
 
       setResults({
         id: docRef.id,
@@ -67,6 +70,7 @@ export default function AnalysisPage() {
 
     } catch (error) {
       console.error('Error saving analysis:', error);
+      alert(`Failed to save analysis: ${error.message}`);
     } finally {
       setAnalyzing(false);
     }
