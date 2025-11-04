@@ -1,4 +1,4 @@
-y'use client';
+'use client';
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';

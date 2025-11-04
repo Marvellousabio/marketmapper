@@ -65,8 +65,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             photoURL: firebaseUser.photoURL || undefined,
             createdAt: new Date(),
           };
+          // Filter out undefined values for Firestore
+          const userDataToSave = Object.fromEntries(
+            Object.entries(newUser).filter(([_, value]) => value !== undefined)
+          );
           await setDoc(doc(db, 'users', firebaseUser.uid), {
-            ...newUser,
+            ...userDataToSave,
             createdAt: new Date(),
           });
           setUser(newUser);
@@ -85,17 +89,31 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const signUp = async (email: string, password: string, displayName: string) => {
-    const result = await createUserWithEmailAndPassword(auth, email, password);
-    await updateProfile(result.user, { displayName });
+    console.log('signUp called with:', { email, password: password ? '[REDACTED]' : undefined, displayName });
+    try {
+      console.log('Attempting to create user with Firebase...');
+      const result = await createUserWithEmailAndPassword(auth, email, password);
+      console.log('User created successfully:', result.user.uid);
 
-    // Create user document in Firestore
-    const userData = {
-      displayName,
-      email,
-      createdAt: new Date(),
-    };
+      console.log('Updating profile...');
+      await updateProfile(result.user, { displayName });
+      console.log('Profile updated successfully');
 
-    await setDoc(doc(db, 'users', result.user.uid), userData);
+      // Create user document in Firestore
+      const userData = {
+        displayName,
+        email,
+        createdAt: new Date(),
+      };
+
+      console.log('Creating Firestore document...');
+      await setDoc(doc(db, 'users', result.user.uid), userData);
+      console.log('SignUp process completed successfully');
+      console.log('Firestore document created successfully');
+    } catch (error) {
+      console.error('Error in signUp:', error);
+      throw error;
+    }
   };
 
   const signOut = async () => {
