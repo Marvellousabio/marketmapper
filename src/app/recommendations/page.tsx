@@ -5,28 +5,14 @@ import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
-
-interface ProductRecommendation {
-  id: string;
-  product: string;
-  category: string;
-  demandScore: number;
-  competitionLevel: 'low' | 'medium' | 'high';
-  suppliers: Array<{
-    name: string;
-    location: string;
-    contact: string;
-    priceRange: string;
-    reliability: number;
-  }>;
-  estimatedProfit: number;
-  targetAudience: string;
-}
+import { collection, addDoc, query, where, getDocs } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
+import { ProductRecommendation } from '@/types';
 
 export default function RecommendationsPage() {
   const { user, loading } = useAuth();
   const router = useRouter();
-  const [recommendations, setRecommendations] = useState<ProductRecommendation[]>([]);
+  const [recommendations, setRecommendations] = useState<Omit<ProductRecommendation, 'analysisId'>[]>([]);
   const [loadingRecs, setLoadingRecs] = useState(false);
 
   useEffect(() => {
@@ -35,18 +21,19 @@ export default function RecommendationsPage() {
     }
   }, [user, loading, router]);
 
-  const generateRecommendations = () => {
+  const generateRecommendations = async () => {
+    if (!user) return;
+
     setLoadingRecs(true);
 
-    // Simulate AI-generated recommendations based on market analysis
-    setTimeout(() => {
-      setRecommendations([
+    try {
+      // Generate mock recommendations (in production, this would use AI based on market analysis)
+      const mockRecommendations = [
         {
-          id: '1',
           product: 'Healthy Ready-to-Eat Meals',
           category: 'Food & Beverage',
           demandScore: 85,
-          competitionLevel: 'medium',
+          competitionLevel: 'medium' as const,
           suppliers: [
             {
               name: 'Lagos Fresh Foods Ltd',
@@ -67,11 +54,10 @@ export default function RecommendationsPage() {
           targetAudience: 'Busy professionals aged 25-45'
         },
         {
-          id: '2',
           product: 'Local Handicrafts & Artisanal Goods',
           category: 'Arts & Crafts',
           demandScore: 78,
-          competitionLevel: 'low',
+          competitionLevel: 'low' as const,
           suppliers: [
             {
               name: 'Nigerian Artisans Cooperative',
@@ -85,11 +71,10 @@ export default function RecommendationsPage() {
           targetAudience: 'Middle-income families and tourists'
         },
         {
-          id: '3',
           product: 'Organic Produce Delivery',
           category: 'Agriculture',
           demandScore: 92,
-          competitionLevel: 'low',
+          competitionLevel: 'low' as const,
           suppliers: [
             {
               name: 'Green Farms Lagos',
@@ -109,9 +94,29 @@ export default function RecommendationsPage() {
           estimatedProfit: 38000,
           targetAudience: 'Health-conscious families'
         }
-      ]);
+      ];
+
+      // Save recommendations to Firestore
+      const savedRecommendations = [];
+      for (const rec of mockRecommendations) {
+        const docRef = await addDoc(collection(db, 'productRecommendations'), {
+          userId: user.id,
+          analysisId: null, // Can be linked to market analysis later
+          ...rec,
+          createdAt: new Date()
+        });
+        savedRecommendations.push({
+          id: docRef.id,
+          ...rec
+        });
+      }
+
+      setRecommendations(savedRecommendations);
+    } catch (error) {
+      console.error('Error saving recommendations:', error);
+    } finally {
       setLoadingRecs(false);
-    }, 2000);
+    }
   };
 
   const getCompetitionColor = (level: string) => {

@@ -6,6 +6,9 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Card } from '@/components/ui/Card';
+import { collection, addDoc } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
+import { USP } from '@/types';
 
 interface USPData {
   product: string;
@@ -59,10 +62,28 @@ export default function USPBuilderPage() {
     }
   };
 
-  const generateUSP = () => {
+  const generateUSP = async () => {
+    if (!user) return;
+
     const usp = `For ${uspData.targetAudience}, ${uspData.product} delivers ${uspData.valueProposition} through ${uspData.uniqueFeatures.filter(f => f.trim()).join(', ')}. Unlike competitors, we ${uspData.competitiveAdvantage}.`;
-    setGeneratedUSP(usp);
-    setCurrentStep(6);
+
+    try {
+      // Save USP to Firestore
+      await addDoc(collection(db, 'usps'), {
+        userId: user.id,
+        product: uspData.product,
+        uniqueFeatures: uspData.uniqueFeatures.filter(f => f.trim()),
+        targetAudience: uspData.targetAudience,
+        competitiveAdvantage: uspData.competitiveAdvantage,
+        valueProposition: uspData.valueProposition,
+        createdAt: new Date()
+      });
+
+      setGeneratedUSP(usp);
+      setCurrentStep(6);
+    } catch (error) {
+      console.error('Error saving USP:', error);
+    }
   };
 
   const nextStep = () => {

@@ -7,29 +7,16 @@ import { useEffect } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Card } from '@/components/ui/Card';
+import { collection, addDoc, query, where, getDocs, orderBy, limit } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
+import { MarketAnalysis } from '@/types';
 
 export default function AnalysisPage() {
   const { user, loading } = useAuth();
   const router = useRouter();
   const [location, setLocation] = useState('');
   const [analyzing, setAnalyzing] = useState(false);
-  const [results, setResults] = useState<{
-    demographics: {
-      ageGroups: { [key: string]: number };
-      incomeLevels: { [key: string]: number };
-      interests: string[];
-    };
-    trends: {
-      socialMedia: string[];
-      searchTerms: string[];
-      competitorActivity: string[];
-    };
-    demandGaps: {
-      highDemand: string[];
-      lowCompetition: string[];
-      emergingTrends: string[];
-    };
-  } | null>(null);
+  const [results, setResults] = useState<MarketAnalysis | null>(null);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -38,13 +25,13 @@ export default function AnalysisPage() {
   }, [user, loading, router]);
 
   const handleAnalysis = async () => {
-    if (!location.trim()) return;
+    if (!location.trim() || !user) return;
 
     setAnalyzing(true);
 
-    // Simulate AI analysis (in real implementation, this would call Firebase Functions)
-    setTimeout(() => {
-      setResults({
+    try {
+      // Generate mock analysis data (in production, this would call AI APIs)
+      const analysisData = {
         demographics: {
           ageGroups: { '18-25': 25, '26-35': 35, '36-45': 25, '46+': 15 },
           incomeLevels: { 'Low': 40, 'Middle': 45, 'High': 15 },
@@ -60,9 +47,29 @@ export default function AnalysisPage() {
           lowCompetition: ['Organic produce delivery', 'Customized healthy meals'],
           emergingTrends: ['Plant-based foods', 'Sustainable products']
         }
+      };
+
+      // Save analysis to Firestore
+      const docRef = await addDoc(collection(db, 'marketAnalyses'), {
+        userId: user.id,
+        location: location.trim(),
+        ...analysisData,
+        createdAt: new Date()
       });
+
+      setResults({
+        id: docRef.id,
+        userId: user.id,
+        location: location.trim(),
+        ...analysisData,
+        createdAt: new Date()
+      });
+
+    } catch (error) {
+      console.error('Error saving analysis:', error);
+    } finally {
       setAnalyzing(false);
-    }, 3000);
+    }
   };
 
   if (loading) {

@@ -87,7 +87,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const signUp = async (email: string, password: string, displayName: string) => {
     const result = await createUserWithEmailAndPassword(auth, email, password);
     await updateProfile(result.user, { displayName });
-    // User document will be created in the onAuthStateChanged listener
+
+    // Create user document in Firestore
+    const userData = {
+      displayName,
+      email,
+      createdAt: new Date(),
+    };
+
+    await setDoc(doc(db, 'users', result.user.uid), userData);
   };
 
   const signOut = async () => {
