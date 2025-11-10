@@ -1,8 +1,34 @@
+'use client';
+
 import Link from 'next/link';
+import { useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
+import { Input } from '@/components/ui/Input';
 
 export default function Home() {
+  const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const handleWaitlistSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email.trim()) return;
+
+    setIsSubmitting(true);
+
+    try {
+      // Simulate API call - replace with actual waitlist signup
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      setIsSubmitted(true);
+      setEmail('');
+    } catch (error) {
+      console.error('Error joining waitlist:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -16,7 +42,7 @@ export default function Home() {
               Discover profitable business opportunities in Nigeria with our intelligent market analysis,
               personalized product recommendations, and optimized logistics planning.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
               <Link href="/register">
                 <Button size="lg" className="w-full sm:w-auto">
                   Start Your Business Journey
@@ -27,6 +53,53 @@ export default function Home() {
                   Try Market Analysis
                 </Button>
               </Link>
+            </div>
+
+            {/* Waitlist Section */}
+            <div className="max-w-md mx-auto">
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-green-100">
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  🚀 Join Our Waitlist
+                </h3>
+                <p className="text-gray-600 mb-6">
+                  Be the first to know when we launch new features and get exclusive early access.
+                </p>
+
+                {isSubmitted ? (
+                  <div className="text-center py-4">
+                    <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                    <p className="text-green-700 font-medium">Thanks for joining!</p>
+                    <p className="text-sm text-gray-600 mt-1">We&apos;ll be in touch soon.</p>
+                  </div>
+                ) : (
+                  <form onSubmit={handleWaitlistSubmit} className="space-y-4">
+                    <Input
+                      type="email"
+                      placeholder="Enter your email address"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                      className="w-full"
+                    />
+                    <Button
+                      type="submit"
+                      disabled={isSubmitting || !email.trim()}
+                      className="w-full"
+                      size="lg"
+                    >
+                      {isSubmitting ? 'Joining...' : 'Join Waitlist'}
+                    </Button>
+                  </form>
+                )}
+
+                <p className="text-xs text-gray-500 mt-4 text-center">
+                  No spam, unsubscribe at any time.
+                </p>
+              </div>
             </div>
           </div>
         </div>
