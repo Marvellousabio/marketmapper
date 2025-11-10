@@ -42,7 +42,7 @@ export const Header: React.FC = () => {
               }`}>
                 <span className="text-white font-bold text-sm">MM</span>
               </div>
-              <span className="text-xl font-bold text-foreground">Market Mapper</span>
+              <span className="text-xl font-bold text-foreground hidden xs:inline">Market Mapper</span>
             </Link>
           </div>
 
@@ -61,7 +61,7 @@ export const Header: React.FC = () => {
             </Link>
           </nav>
 
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2 xs:space-x-4">
             <ThemeToggle />
             {isOverflowing && (
               <button
@@ -72,14 +72,14 @@ export const Header: React.FC = () => {
               </button>
             )}
             {user ? (
-              <div className="flex items-center space-x-4">
+              <div className="hidden xs:flex items-center space-x-4">
                 <span className="text-sm text-muted-foreground hidden sm:inline">{user.displayName || user.email}</span>
                 <Button variant="outline" size="sm" onClick={signOut}>
                   Sign Out
                 </Button>
               </div>
             ) : (
-              <div className="flex items-center space-x-4">
+              <div className="hidden xs:flex items-center space-x-4">
                 <Link href="/login">
                   <Button variant="outline" size="sm">
                     Sign In
@@ -92,6 +92,14 @@ export const Header: React.FC = () => {
                 </Link>
               </div>
             )}
+            {/* Mobile-only Get Started button */}
+            <div className="xs:hidden">
+              <Link href="/register">
+                <Button size="sm">
+                  Get Started
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
 
