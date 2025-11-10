@@ -19,7 +19,7 @@ import {
 } from '@/data/mockData';
 
 // Environment-based data source switching
-const USE_MOCK_DATA = process.env.NODE_ENV === 'development' && !process.env.NEXT_PUBLIC_USE_FIREBASE;
+const USE_MOCK_DATA = true; // Force mock data for development until Firebase is properly configured
 
 export const useMarkets = () => {
   const [markets, setMarkets] = useState<Market[]>([]);

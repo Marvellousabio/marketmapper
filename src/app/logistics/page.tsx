@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Card } from '@/components/ui/Card';
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { LogisticsPlan } from '@/types';
 import { useLogisticsRoutes } from '@/hooks/useFirebaseData';
@@ -98,7 +98,7 @@ export default function LogisticsPage() {
         await addDoc(collection(db, 'logisticsPlans'), {
           userId: user!.id,
           ...planData,
-          createdAt: new Date()
+          createdAt: serverTimestamp()
         });
 
         setPlan(planData);

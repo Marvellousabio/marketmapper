@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Card } from '@/components/ui/Card';
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { MarketAnalysis } from '@/types';
 import { useMarkets, useMarketAnalysis } from '@/hooks/useFirebaseData';
@@ -61,7 +61,7 @@ export default function AnalysisPage() {
         userId: user.id,
         location: location.trim(),
         ...analysisData,
-        createdAt: new Date()
+        createdAt: serverTimestamp()
       });
       console.log('Analysis saved successfully with ID:', docRef.id);
 
@@ -70,7 +70,7 @@ export default function AnalysisPage() {
         userId: user.id,
         location: location.trim(),
         ...analysisData,
-        createdAt: new Date()
+        createdAt: new Date() // Keep client-side date for display, serverTimestamp is for storage
       });
 
     } catch (error) {

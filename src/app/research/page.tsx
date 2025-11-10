@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Card } from '@/components/ui/Card';
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { MarketResearch } from '@/types';
 import { useResearchReports } from '@/hooks/useFirebaseData';
@@ -60,7 +60,7 @@ export default function ResearchPage() {
         questions: validQuestions,
         responses: [],
         insights: [],
-        createdAt: new Date()
+        createdAt: serverTimestamp()
       };
 
       // Add mock responses based on research type
@@ -91,7 +91,8 @@ export default function ResearchPage() {
 
       setResearch({
         id: docRef.id,
-        ...researchData
+        ...researchData,
+        createdAt: new Date() // Keep client-side date for display
       });
     } catch (error) {
       console.error('Error creating research:', error);
