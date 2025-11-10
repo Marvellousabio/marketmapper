@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Card } from '@/components/ui/Card';
-import { collection, addDoc, query, where, getDocs, orderBy, limit } from 'firebase/firestore';
+import { collection, addDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { MarketAnalysis } from '@/types';
 
@@ -70,7 +70,7 @@ export default function AnalysisPage() {
 
     } catch (error) {
       console.error('Error saving analysis:', error);
-      alert(`Failed to save analysis: ${error.message}`);
+      alert(`Failed to save analysis: ${error instanceof Error ? error.message : 'Unknown error'}`);
     } finally {
       setAnalyzing(false);
     }

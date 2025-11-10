@@ -152,7 +152,7 @@ export default function LogisticsPage() {
             </div>
 
             <div className="bg-blue-50 p-4 rounded-lg">
-              <h3 className="font-medium text-blue-900 mb-2">What we'll optimize:</h3>
+              <h3 className="font-medium text-blue-900 mb-2">What we&apos;ll optimize:</h3>
               <ul className="text-sm text-blue-800 space-y-1">
                 <li>• Best transportation methods for your route</li>
                 <li>• Cost-effective delivery options</li>

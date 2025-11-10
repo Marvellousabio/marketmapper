@@ -5,7 +5,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
-import { collection, addDoc, query, where, getDocs } from 'firebase/firestore';
+import { collection, addDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { ProductRecommendation } from '@/types';
 
