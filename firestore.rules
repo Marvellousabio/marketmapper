@@ -51,5 +51,20 @@ service cloud.firestore {
     match /marketResearch {
       allow create: if request.auth != null && request.auth.uid == request.resource.data.userId;
     }
+
+    // Public market data (read-only for authenticated users)
+    match /markets/{marketId} {
+      allow read: if request.auth != null;
+    }
+
+    // Public logistics routes (read-only for authenticated users)
+    match /logistics/{routeId} {
+      allow read: if request.auth != null;
+    }
+
+    // Public research reports (read-only for authenticated users)
+    match /research/{reportId} {
+      allow read: if request.auth != null;
+    }
   }
 }

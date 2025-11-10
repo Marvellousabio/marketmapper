@@ -9,20 +9,24 @@ import { Card } from '@/components/ui/Card';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { MarketResearch } from '@/types';
+import { useResearchReports } from '@/hooks/useFirebaseData';
 
 export default function ResearchPage() {
-  const { user, loading } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const router = useRouter();
   const [researchType, setResearchType] = useState<'survey' | 'focus_group' | 'interview' | 'social_listening'>('survey');
   const [questions, setQuestions] = useState<string[]>(['']);
   const [research, setResearch] = useState<MarketResearch | null>(null);
   const [creating, setCreating] = useState(false);
 
+  // Fetch research reports
+  const { reports: availableReports, loading: reportsLoading, error: reportsError } = useResearchReports();
+
   useEffect(() => {
-    if (!loading && !user) {
+    if (!authLoading && !user) {
       router.push('/login');
     }
-  }, [user, loading, router]);
+  }, [user, authLoading, router]);
 
   const addQuestion = () => {
     setQuestions([...questions, '']);
@@ -103,7 +107,7 @@ export default function ResearchPage() {
     { value: 'social_listening', label: 'Social Media Listening', description: 'Monitor online conversations' }
   ];
 
-  if (loading) {
+  if (authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
@@ -126,6 +130,31 @@ export default function ResearchPage() {
           Create surveys, conduct interviews, and gather customer insights
         </p>
       </div>
+
+      {/* Research Reports Overview */}
+      {!reportsLoading && !reportsError && availableReports.length > 0 && (
+        <div className="mb-8">
+          <Card title="Latest Research Reports" description="Insights from our research database">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {availableReports.slice(0, 6).map((report) => (
+                <div key={report.id} className="p-4 border rounded-lg hover:border-green-300 transition-colors">
+                  <div className="flex justify-between items-start mb-2">
+                    <h4 className="font-medium text-sm">{report.title}</h4>
+                    <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
+                      {report.category}
+                    </span>
+                  </div>
+                  <p className="text-sm text-gray-600 mb-2 line-clamp-2">{report.summary}</p>
+                  <div className="flex justify-between items-center text-xs text-gray-500">
+                    <span>{report.author}</span>
+                    <span>{new Date(report.date).toLocaleDateString()}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Card>
+        </div>
+      )}
 
       {!research ? (
         <Card title="Create Market Research" description="Choose your research method and design your questions">

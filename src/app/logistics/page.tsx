@@ -9,20 +9,24 @@ import { Card } from '@/components/ui/Card';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { LogisticsPlan } from '@/types';
+import { useLogisticsRoutes } from '@/hooks/useFirebaseData';
 
 export default function LogisticsPage() {
-  const { user, loading } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const router = useRouter();
   const [location, setLocation] = useState('');
   const [destination, setDestination] = useState('');
   const [planning, setPlanning] = useState(false);
   const [plan, setPlan] = useState<Omit<LogisticsPlan, 'id' | 'userId'> | null>(null);
 
+  // Fetch available logistics routes
+  const { routes: availableRoutes, loading: routesLoading, error: routesError } = useLogisticsRoutes();
+
   useEffect(() => {
-    if (!loading && !user) {
+    if (!authLoading && !user) {
       router.push('/login');
     }
-  }, [user, loading, router]);
+  }, [user, authLoading, router]);
 
   const generateLogisticsPlan = () => {
     if (!location.trim() || !destination.trim()) return;
@@ -106,7 +110,7 @@ export default function LogisticsPage() {
     }, 2500);
   };
 
-  if (loading) {
+  if (authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
@@ -129,6 +133,29 @@ export default function LogisticsPage() {
           Optimize your delivery routes and choose the best transportation methods
         </p>
       </div>
+
+      {/* Available Routes Overview */}
+      {!routesLoading && !routesError && availableRoutes.length > 0 && (
+        <div className="mb-8">
+          <Card title="Available Routes" description="Popular logistics routes in our database">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {availableRoutes.slice(0, 6).map((route) => (
+                <div key={route.id} className="p-4 border rounded-lg hover:border-green-300 transition-colors">
+                  <div className="flex justify-between items-center mb-2">
+                    <h4 className="font-medium">{route.origin} → {route.destination}</h4>
+                    <span className="text-sm text-gray-500">{route.distance}km</span>
+                  </div>
+                  <p className="text-sm text-gray-600 mb-2">{route.duration}</p>
+                  <div className="flex justify-between items-center text-sm">
+                    <span>₦{route.costRange.min.toLocaleString()} - ₦{route.costRange.max.toLocaleString()}</span>
+                    <span className="text-green-600">{route.providers.length} providers</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Card>
+        </div>
+      )}
 
       {!plan ? (
         <Card title="Plan Your Logistics" description="Enter your delivery details">

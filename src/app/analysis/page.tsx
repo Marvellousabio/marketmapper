@@ -10,19 +10,24 @@ import { Card } from '@/components/ui/Card';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { MarketAnalysis } from '@/types';
+import { useMarkets, useMarketAnalysis } from '@/hooks/useFirebaseData';
 
 export default function AnalysisPage() {
-  const { user, loading } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const router = useRouter();
   const [location, setLocation] = useState('');
   const [analyzing, setAnalyzing] = useState(false);
   const [results, setResults] = useState<MarketAnalysis | null>(null);
 
+  // Fetch market data for overview
+  const { markets, loading: marketsLoading, error: marketsError } = useMarkets();
+  const { analysis: marketAnalysis, loading: analysisLoading } = useMarketAnalysis();
+
   useEffect(() => {
-    if (!loading && !user) {
+    if (!authLoading && !user) {
       router.push('/login');
     }
-  }, [user, loading, router]);
+  }, [user, authLoading, router]);
 
   const handleAnalysis = async () => {
     if (!location.trim() || !user) return;
@@ -76,7 +81,7 @@ export default function AnalysisPage() {
     }
   };
 
-  if (loading) {
+  if (authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
@@ -92,13 +97,55 @@ export default function AnalysisPage() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900">Market Analysis</h1>
         <p className="mt-2 text-gray-600">
           Discover demand patterns and opportunities in your target location
         </p>
       </div>
+
+      {/* Market Overview Dashboard */}
+      {!analysisLoading && !marketsError && markets.length > 0 && (
+        <div className="mb-8">
+          <Card title="Market Overview" description="Key insights from our market database">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+              <div className="text-center">
+                <div className="text-2xl font-bold text-green-600">{marketAnalysis.totalMarkets}</div>
+                <div className="text-sm text-gray-600">Total Markets</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-blue-600">{marketAnalysis.averageDemandScore.toFixed(1)}</div>
+                <div className="text-sm text-gray-600">Avg Demand Score</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-purple-600">{marketAnalysis.growthRateAverage.toFixed(1)}%</div>
+                <div className="text-sm text-gray-600">Avg Growth Rate</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-orange-600">{marketAnalysis.marketDistribution.highCompetition}</div>
+                <div className="text-sm text-gray-600">High Competition</div>
+              </div>
+            </div>
+
+            <div className="mt-6">
+              <h4 className="font-medium text-gray-900 mb-3">Top Performing Markets</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {marketAnalysis.topPerformingMarkets.map((market) => (
+                  <div key={market.id} className="p-4 border rounded-lg">
+                    <h5 className="font-medium">{market.name}</h5>
+                    <p className="text-sm text-gray-600">{market.location.address}</p>
+                    <div className="flex justify-between items-center mt-2">
+                      <span className="text-sm">Demand: {market.demandScore}</span>
+                      <span className="text-sm text-green-600">+{market.growthRate}%</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </Card>
+        </div>
+      )}
 
       {!results ? (
         <Card title="Start Your Analysis" description="Enter your target location to begin">
