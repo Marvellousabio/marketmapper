@@ -185,6 +185,7 @@ export class RiskAssessor {
   }
 
   private generateMarketRecommendations(market: Market, factors: RiskFactors, riskLevel: string): string[] {
+    console.log('Debug: riskLevel in generateMarketRecommendations:', riskLevel);
     const recommendations: string[] = [];
 
     if (factors.competitionIntensity > 0.7) {
@@ -211,6 +212,7 @@ export class RiskAssessor {
   }
 
   private generateLogisticsRecommendations(route: LogisticsRoute, provider: LogisticsProvider, factors: RiskFactors, riskLevel: string): string[] {
+    console.log('Debug: riskLevel in generateLogisticsRecommendations:', riskLevel);
     const recommendations: string[] = [];
 
     if (factors.logisticsReliability > 0.6) {

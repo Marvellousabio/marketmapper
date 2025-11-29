@@ -1,5 +1,5 @@
 import { Market, LogisticsRoute, ResearchReport, LogisticsProvider, mockMarkets, mockLogisticsRoutes, mockResearchReports } from '@/data/mockData';
-import { MarketRecommendation, LogisticsRecommendation, ResearchRecommendation } from '@/types';
+import { MarketRecommendation, LogisticsRecommendation, ResearchRecommendation, UserPreferences } from '@/types';
 import { CollaborativeFilteringEngine, mockUserInteractions, mockUserPreferences } from './collaborativeFiltering';
 import { ContextualBandits, BanditContext, createContextualBandits } from './contextualBandits';
 import { MarketPredictor, MarketPrediction, createMarketPredictor } from './marketPredictor';
@@ -281,12 +281,20 @@ export class RecommendationEngine {
   }
 
   // Update user preferences
-  updateUserPreferences(userId: string, preferences: any): void {
+  updateUserPreferences(userId: string, preferences: Partial<UserPreferences>): void {
+    console.log('Debug: Updating user preferences for', userId, 'with', preferences);
     this.personalizationEngine.updateUserPreferences(userId, preferences);
   }
 
   // Get user analytics
-  getUserAnalytics(userId: string): any {
+  getUserAnalytics(userId: string): {
+    totalInteractions: number;
+    avgSessionLength: number;
+    topInterests: string[];
+    conversionRate: number;
+    engagementTrend: 'increasing' | 'stable' | 'decreasing';
+  } {
+    console.log('Debug: Getting user analytics for', userId);
     return this.personalizationEngine.getUserAnalytics(userId);
   }
 
@@ -353,6 +361,7 @@ export class RecommendationEngine {
     // Adjust recommendations based on risk tolerance
     const riskMultiplier = riskTolerance === 'high' ? 1.2 :
                           riskTolerance === 'low' ? 0.7 : 1.0;
+    console.log('Debug: riskMultiplier calculated as', riskMultiplier);
 
     // Filter out high-risk recommendations based on tolerance
     const filteredMarkets = baseRecommendations.marketRecommendations.filter(rec => {

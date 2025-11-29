@@ -167,6 +167,7 @@ export class UserPersonalizationEngine {
         // For now, we'll use a simplified approach
       }
     });
+    console.log('Debug: productCounts map:', productCounts);
 
     profile.behaviorPatterns = {
       ...profile.behaviorPatterns,

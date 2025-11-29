@@ -7,11 +7,9 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
-import { ProductRecommendation } from '@/types';
 import { useRealtimeData } from '@/hooks/useRealtimeData';
 import { createRecommendationEngine } from '@/lib/recommendationEngine';
 import { MarketRecommendation, LogisticsRecommendation, ResearchRecommendation } from '@/types';
-import { PersonalizationContext } from '@/lib/userPersonalization';
 
 export default function RecommendationsPage() {
   const { user, loading } = useAuth();
@@ -195,6 +193,7 @@ export default function RecommendationsPage() {
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Location</label>
                   <select
+                   title="location"
                     value={filters.location}
                     onChange={(e) => setFilters({...filters, location: e.target.value})}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
@@ -210,6 +209,7 @@ export default function RecommendationsPage() {
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Min Demand Score</label>
                   <input
+                  title="form-range"
                     type="range"
                     min="0"
                     max="10"
@@ -223,6 +223,7 @@ export default function RecommendationsPage() {
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Max Competition</label>
                   <select
+                  title="competition"
                     value={filters.maxCompetition}
                     onChange={(e) => setFilters({...filters, maxCompetition: e.target.value as 'Low' | 'Medium' | 'High'})}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
@@ -236,6 +237,7 @@ export default function RecommendationsPage() {
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Risk Tolerance</label>
                   <select
+                  title='risk'
                     value={filters.riskTolerance}
                     onChange={(e) => setFilters({...filters, riskTolerance: e.target.value as 'low' | 'medium' | 'high'})}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
