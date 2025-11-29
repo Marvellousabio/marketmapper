@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
+import Footer from '@/components/layout/Footer';
 
 export default function Home() {
   const [email, setEmail] = useState('');
@@ -203,6 +204,8 @@ export default function Home() {
           </Link>
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 }

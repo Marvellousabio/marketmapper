@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/Input';
 import { Card } from '@/components/ui/Card';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
-import { MarketResearch } from '@/types';
+import { MarketResearch, ResearchResponse } from '@/types';
 import { useResearchReports } from '@/hooks/useFirebaseData';
 
 export default function ResearchPage() {
@@ -58,8 +58,8 @@ export default function ResearchPage() {
         userId: user.id,
         type: researchType,
         questions: validQuestions,
-        responses: [],
-        insights: [],
+        responses: [] as ResearchResponse[],
+        insights: [] as string[],
         createdAt: serverTimestamp()
       };
 
