@@ -19,9 +19,9 @@ export default function AnalysisPage() {
   const [analyzing, setAnalyzing] = useState(false);
   const [results, setResults] = useState<MarketAnalysis | null>(null);
 
-  // Fetch market data for overview
-  const { markets, loading: marketsLoading, error: marketsError } = useMarkets();
-  const { analysis: marketAnalysis, loading: analysisLoading } = useMarketAnalysis();
+   // Fetch market data for overview
+   const { markets, error: marketsError } = useMarkets();
+   const { analysis: marketAnalysis, loading: analysisLoading } = useMarketAnalysis();
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -57,7 +57,7 @@ export default function AnalysisPage() {
 
       console.log('Attempting to save analysis to Firestore...');
       // Save analysis to Firestore
-      const docRef = await addDoc(collection(db, 'marketAnalyses'), {
+      const docRef = await addDoc(collection(db!, 'marketAnalyses'), {
         userId: user.id,
         location: location.trim(),
         ...analysisData,

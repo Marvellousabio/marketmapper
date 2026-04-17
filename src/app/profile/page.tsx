@@ -44,7 +44,7 @@ export default function ProfilePage() {
 
     try {
       // Update user profile in Firestore
-      const userRef = doc(db, 'users', user.id);
+      const userRef = doc(db!, 'users', user.id);
       await updateDoc(userRef, {
         displayName: formData.displayName,
         location: formData.location,

@@ -6,9 +6,8 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Card } from '@/components/ui/Card';
-import { collection, addDoc } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
-import { USP } from '@/types';
+ import { collection, addDoc } from 'firebase/firestore';
+ import { db } from '@/lib/firebase';
 
 interface USPData {
   product: string;
@@ -69,7 +68,7 @@ export default function USPBuilderPage() {
 
     try {
       // Save USP to Firestore
-      await addDoc(collection(db, 'usps'), {
+      await addDoc(collection(db!, 'usps'), {
         userId: user.id,
         product: uspData.product,
         uniqueFeatures: uspData.uniqueFeatures.filter(f => f.trim()),

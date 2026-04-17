@@ -95,7 +95,7 @@ export default function LogisticsPage() {
 
       try {
         // Save logistics plan to Firestore
-        await addDoc(collection(db, 'logisticsPlans'), {
+        await addDoc(collection(db!, 'logisticsPlans'), {
           userId: user!.id,
           ...planData,
           createdAt: serverTimestamp()

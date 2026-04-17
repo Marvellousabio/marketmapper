@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import {
   collection,
-  getDocs,
   onSnapshot,
   query,
   orderBy,
@@ -36,7 +35,7 @@ export const useMarkets = () => {
 
     // Real Firebase implementation
     const unsubscribe = onSnapshot(
-      query(collection(db, 'markets'), orderBy('demandScore', 'desc')),
+      query(collection(db!, 'markets'), orderBy('demandScore', 'desc')),
       (snapshot) => {
         const marketsData = snapshot.docs.map(doc => ({
           id: doc.id,
@@ -86,14 +85,14 @@ export const useLogisticsRoutes = (origin?: string, destination?: string) => {
     }
 
     // Real Firebase implementation
-    let q = query(collection(db, 'logistics'), orderBy('distance'));
+    let q = query(collection(db!, 'logistics'), orderBy('distance'));
 
-    if (origin || destination) {
-      const conditions = [];
-      if (origin) conditions.push(where('origin', '==', origin));
-      if (destination) conditions.push(where('destination', '==', destination));
-      q = query(collection(db, 'logistics'), ...conditions);
-    }
+     if (origin || destination) {
+       const conditions = [];
+       if (origin) conditions.push(where('origin', '==', origin));
+       if (destination) conditions.push(where('destination', '==', destination));
+       q = query(collection(db!, 'logistics'), ...conditions);
+     }
 
     const unsubscribe = onSnapshot(
       q,
@@ -145,13 +144,13 @@ export const useResearchReports = (category?: string, limitCount?: number) => {
 
     // Real Firebase implementation
     let q = query(
-      collection(db, 'research'),
+      collection(db!, 'research'),
       orderBy('date', 'desc')
     );
 
     if (category) {
       q = query(
-        collection(db, 'research'),
+        collection(db!, 'research'),
         where('category', '==', category),
         orderBy('date', 'desc')
       );
@@ -189,7 +188,7 @@ export const useResearchReports = (category?: string, limitCount?: number) => {
 export const useMarket = (marketId: string) => {
   const [market, setMarket] = useState<Market | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error] = useState<string | null>(null);
 
   useEffect(() => {
     if (USE_MOCK_DATA) {

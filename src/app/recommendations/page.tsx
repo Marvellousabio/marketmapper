@@ -101,8 +101,8 @@ export default function RecommendationsPage() {
       setResearchRecommendations(combinedResearchRecs);
 
       // Save to Firestore for persistence (optional)
-      try {
-        await addDoc(collection(db, 'recommendationSessions'), {
+       try {
+         await addDoc(collection(db!, 'recommendationSessions'), {
           userId: user.id,
           marketRecommendations: combinedMarketRecs,
           logisticsRecommendations: combinedLogisticsRecs,

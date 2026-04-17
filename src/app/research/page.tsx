@@ -87,7 +87,7 @@ export default function ResearchPage() {
       }
 
       // Save to Firestore
-      const docRef = await addDoc(collection(db, 'marketResearch'), researchData);
+      const docRef = await addDoc(collection(db!, 'marketResearch'), researchData);
 
       setResearch({
         id: docRef.id,
